@@ -1,9 +1,10 @@
-import { pgTable, text, serial, integer, decimal, boolean, timestamp } from "drizzle-orm/pg-core";
+
+import { mysqlTable, text, int, decimal, boolean, timestamp, json } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const products = pgTable("products", {
-  id: serial("id").primaryKey(),
+export const products = mysqlTable("products", {
+  id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   description: text("description").notNull(),
   price: decimal("price", { precision: 10, scale: 2 }).notNull(),
@@ -12,25 +13,25 @@ export const products = pgTable("products", {
   brand: text("brand").notNull(),
   featured: boolean("featured").default(false),
   badge: text("badge"), // "New", "Popular", etc.
-  sizes: text("sizes").array().notNull(), // Available sizes
-  colors: text("colors").array().notNull(), // Available colors
+  sizes: json("sizes").notNull(), // Available sizes as JSON
+  colors: json("colors").notNull(), // Available colors as JSON
   inStock: boolean("in_stock").default(true),
 });
 
-export const categories = pgTable("categories", {
-  id: serial("id").primaryKey(),
+export const categories = mysqlTable("categories", {
+  id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
   slug: text("slug").notNull().unique(),
 });
 
-export const cartItems = pgTable("cart_items", {
-  id: serial("id").primaryKey(),
-  productId: integer("product_id").notNull(),
+export const cartItems = mysqlTable("cart_items", {
+  id: int("id").primaryKey().autoincrement(),
+  productId: int("product_id").notNull(),
   size: text("size").notNull(),
   color: text("color").notNull(),
-  quantity: integer("quantity").notNull().default(1),
+  quantity: int("quantity").notNull().default(1),
   sessionId: text("session_id").notNull(),
 });
 
