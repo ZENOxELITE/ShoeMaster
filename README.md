@@ -3,7 +3,7 @@
 
 ## Overview
 
-STRIDE is a modern e-commerce platform specializing in athletic footwear, built with a full-stack TypeScript architecture. The application features a React frontend with shadcn/ui components, an Express.js backend, and uses Drizzle ORM for database operations.
+STRIDE is a modern e-commerce platform specializing in athletic footwear, built with a full-stack TypeScript architecture. The application features a React frontend with shadcn/ui components, an Express.js backend, and uses Drizzle ORM for database operations with MySQL.
 
 ## Technology Stack
 
@@ -19,169 +19,192 @@ STRIDE is a modern e-commerce platform specializing in athletic footwear, built 
 - **Runtime**: Node.js with Express.js
 - **Language**: TypeScript with ES modules
 - **Database ORM**: Drizzle ORM
-- **Database**: MySQL (with fallback to local connection)
-- **Session Management**: Express sessions
+- **Database**: MySQL (stride_db)
+- **Session Management**: Express sessions with in-memory storage
 - **Development**: Hot reload with Vite middleware integration
 
 ## Quick Start
 
 ### Prerequisites
 - Node.js 18+
-- MySQL database (local or remote)
+- MySQL database (XAMPP or local MySQL server)
+- Visual Studio Code (recommended)
 
-### Installation
+### Windows Development Setup
 
-1. **Install dependencies**:
+1. **Install XAMPP**:
+   - Download and install XAMPP for Windows
+   - Start Apache and MySQL services in XAMPP Control Panel
+
+2. **Create Database**:
+   ```sql
+   CREATE DATABASE stride_db;
+   ```
+
+3. **Clone and Setup**:
    ```bash
+   git clone <repository-url>
+   cd ShoeMaster
    npm install
    ```
 
-2. **Environment Setup**:
-   Create `.env` file with your database configuration:
+4. **Environment Configuration**:
+   Create `.env` file with:
+   ```env
+   DATABASE_URL=mysql://root:@localhost:3306/stride_db
    ```
-   DATABASE_URL=mysql://username:password@host:port/database
-   ```
-   
-   If no DATABASE_URL is provided, the application will use a local MySQL connection.
 
-3. **Database Setup**:
+5. **Database Setup**:
    ```bash
+   # Push database schema
    npm run db:push
-   ```
-
-4. **Seed the Database** (optional):
-   ```bash
+   
+   # Seed sample products (optional)
    npx tsx server/seed-products.ts
    ```
 
-5. **Start Development Server**:
+6. **Start Development Server**:
    ```bash
    npm run dev
    ```
 
-The application will be available at `http://localhost:5000`
+   The application will be available at `http://localhost:5000`
 
 ## Project Structure
 
 ```
-STRIDE/
-├── client/                 # React frontend
+├── client/                 # React frontend application
 │   ├── src/
-│   │   ├── components/     # UI components (shadcn/ui + custom)
-│   │   ├── pages/          # Route pages
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Application pages/routes
 │   │   ├── hooks/          # Custom React hooks
-│   │   └── lib/           # Utilities and configurations
-├── server/                # Express backend
+│   │   └── lib/            # Utility functions and configurations
+├── server/                 # Express.js backend
 │   ├── index.ts           # Main server file
-│   ├── routes.ts          # API routes
-│   ├── storage.ts         # Database configuration
+│   ├── routes.ts          # API route definitions
+│   ├── storage.ts         # Database operations
 │   └── seed-products.ts   # Database seeding script
-├── shared/                # Shared TypeScript schemas
-└── package.json          # Dependencies and scripts
+├── shared/                # Shared TypeScript types and schemas
+└── README.md
 ```
 
-## Features
+## Key Features
 
-### Core Features
-- **Product Catalog**: Browse products by category with detailed product pages
-- **Shopping Cart**: Session-based cart with add/remove/update functionality
-- **Responsive Design**: Mobile-first design with Tailwind CSS
-- **Search & Filtering**: Product search and category filtering
-- **Featured Products**: Highlighted product promotions
-- **Real-time Updates**: Optimistic UI updates with React Query
+### E-commerce Functionality
+- **Product Catalog**: Browse athletic footwear by categories
+- **Product Details**: Detailed product pages with size/color selection
+- **Shopping Cart**: Add to cart with variant selection and quantity management
+- **Search**: Product search functionality
+- **Categories**: Organized product categories (Running, Basketball, Lifestyle, Training)
 
-### User Interface
-- **Modern Design**: Clean, athletic-focused aesthetic
-- **Component Library**: Consistent design system using shadcn/ui
-- **Interactive Elements**: Smooth animations and transitions
-- **Accessibility**: Built with Radix UI primitives for accessibility
-
-## API Endpoints
-
-- `GET /api/products` - Get all products
-- `GET /api/products/featured` - Get featured products
-- `GET /api/products/:id` - Get product by ID
-- `GET /api/categories` - Get all categories
-- `GET /api/cart` - Get cart items
-- `POST /api/cart` - Add item to cart
-- `PUT /api/cart/:id` - Update cart item
-- `DELETE /api/cart/:id` - Remove item from cart
+### Technical Features
+- **Full-Stack TypeScript**: End-to-end type safety
+- **Responsive Design**: Mobile-first responsive UI
+- **Real-time Updates**: Optimistic UI updates with server synchronization
+- **Session Management**: Cart persistence across browser sessions
+- **Database Integration**: MySQL with Drizzle ORM
 
 ## Database Schema
 
 ### Products Table
-- `id` - Primary key
-- `name` - Product name
-- `description` - Product description
-- `price` - Product price (decimal)
-- `image` - Product image URL
-- `category` - Product category
-- `sizes` - Available sizes (JSON array)
-- `colors` - Available colors (JSON array)
-- `featured` - Boolean for featured products
-- `created_at` - Timestamp
+- `id` (Primary Key)
+- `name` (Product name)
+- `description` (Product description)
+- `price` (Decimal price)
+- `category` (Product category)
+- `image_url` (Product image URL)
+- `featured` (Boolean for featured products)
+- `stock_quantity` (Available stock)
+- `sizes` (Available sizes as JSON)
+- `colors` (Available colors as JSON)
 
 ### Categories Table
-- `id` - Primary key
-- `name` - Category name
-- `slug` - URL-friendly identifier
+- `id` (Primary Key)
+- `name` (Category name)
+- `slug` (URL-friendly category identifier)
+- `description` (Category description)
 
 ### Cart Items Table
-- `id` - Primary key
-- `session_id` - Session identifier
-- `product_id` - Foreign key to products
-- `size` - Selected size
-- `color` - Selected color
-- `quantity` - Item quantity
-- `created_at` - Timestamp
+- `id` (Primary Key)
+- `session_id` (Session identifier)
+- `product_id` (Foreign key to products)
+- `quantity` (Item quantity)
+- `size` (Selected size)
+- `color` (Selected color)
 
 ## Available Scripts
 
 - `npm run dev` - Start development server with hot reload
 - `npm run build` - Build for production
 - `npm run start` - Start production server
-- `npm run check` - Type check with TypeScript
-- `npm run db:push` - Push database schema changes
+- `npm run check` - TypeScript type checking
+- `npm run db:push` - Apply database schema changes
 
-## Environment Variables
+## Development Workflow
 
-```env
-DATABASE_URL=mysql://username:password@host:port/database
-```
+1. **Frontend Development**: 
+   - Edit React components in `client/src/`
+   - Changes are hot-reloaded automatically
+   - UI components use shadcn/ui design system
 
-**Note**: If `DATABASE_URL` is not set, the application will attempt to connect to a local MySQL instance.
+2. **Backend Development**:
+   - Edit Express routes in `server/`
+   - Database operations in `server/storage.ts`
+   - API endpoints automatically restart on changes
 
-## Development
+3. **Database Changes**:
+   - Modify schema in `shared/schema.ts`
+   - Run `npm run db:push` to apply changes
+   - Use `server/seed-products.ts` for sample data
 
-### Running the Application
-```bash
-npm run dev
-```
+## Deployment (Replit)
 
-### Building for Production
-```bash
-npm run build
-npm run start
-```
+The application is configured for deployment on Replit with the following setup:
 
-### Database Operations
-```bash
-# Push schema changes
-npm run db:push
-
-# Seed sample data
-npx tsx server/seed-products.ts
-```
-
-## Deployment
-
-The application is configured to run on Replit with automatic port forwarding on port 5000. The Express server serves both the API and the built React application in production.
+- **Build Command**: `npm run build`
+- **Start Command**: `npm run start`
+- **Port**: Application runs on port 5000
+- **Database**: Can be configured for Replit's PostgreSQL or external MySQL
 
 ### Production Build Process
 1. **Frontend Build**: Vite compiles React app to static assets
 2. **Backend Build**: esbuild bundles Express server for production
 3. **Database Setup**: Drizzle migrations applied to MySQL
 4. **Static Serving**: Express serves built frontend assets
+
+## Troubleshooting
+
+### Common Issues
+
+**Database Connection Issues**:
+- Ensure XAMPP MySQL service is running
+- Verify DATABASE_URL format: `mysql://root:@localhost:3306/stride_db`
+- Check that `stride_db` database exists in MySQL
+
+**Build Issues**:
+- Run `npm install` to ensure all dependencies are installed
+- Check Node.js version (18+ required)
+- Clear node_modules and reinstall if needed
+
+**Port Issues on Windows**:
+- The application runs on port 5000 by default
+- If you see `ENOTSUP` errors, the host binding has been configured for Windows compatibility
+
+**Windows-Specific Issues**:
+- Use `npx tsx` instead of `tsx` directly for running TypeScript files
+- Environment variables are set using cross-env for Windows compatibility
+
+## API Endpoints
+
+- `GET /api/products` - Get all products
+- `GET /api/products/:id` - Get product by ID
+- `GET /api/products/featured` - Get featured products
+- `GET /api/products/category/:category` - Get products by category
+- `GET /api/categories` - Get all categories
+- `GET /api/cart` - Get cart items for session
+- `POST /api/cart` - Add item to cart
+- `PUT /api/cart/:id` - Update cart item quantity
+- `DELETE /api/cart/:id` - Remove item from cart
 
 ## Contributing
 
@@ -192,24 +215,6 @@ The application is configured to run on Replit with automatic port forwarding on
 5. Push to the branch (`git push origin feature/amazing-feature`)
 6. Open a Pull Request
 
-## Troubleshooting
-
-### Common Issues
-
-**Database Connection Issues**:
-- Verify DATABASE_URL format and credentials
-- Ensure MySQL server is running
-- Check firewall settings for database access
-
-**Build Issues**:
-- Run `npm install` to ensure all dependencies are installed
-- Check Node.js version (18+ required)
-- Clear node_modules and reinstall if needed
-
-**Port Issues**:
-- The application runs on port 5000 by default
-- Ensure port 5000 is not being used by another application
-
 ## License
 
 MIT License - Feel free to use this project for learning and development.
@@ -219,8 +224,5 @@ MIT License - Feel free to use this project for learning and development.
 For issues and questions:
 - Check the troubleshooting section above
 - Review the console logs for error messages
-- Ensure all environment variables are properly configured
-
----
-
-**Deployment**: This project is configured to run on Replit with port 5000 forwarding for web access.
+- Ensure XAMPP MySQL service is running
+- Verify all environment variables are properly configured
