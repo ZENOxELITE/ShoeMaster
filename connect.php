@@ -1,4 +1,3 @@
-
 <?php
 // Database configuration for XAMPP MySQL
 $servername = "localhost";
@@ -77,7 +76,7 @@ function testDatabase($conn) {
     $desc = "High-performance athletic footwear";
     $stmt->bind_param("sss", $name, $slug, $desc);
     $stmt->execute();
-    
+
     // Insert sample product
     $stmt = $conn->prepare("INSERT IGNORE INTO products (name, description, price, category_id, is_featured) VALUES (?, ?, ?, ?, ?)");
     $prod_name = "Nike Air Max";
@@ -87,7 +86,7 @@ function testDatabase($conn) {
     $featured = true;
     $stmt->bind_param("ssdii", $prod_name, $prod_desc, $price, $cat_id, $featured);
     $stmt->execute();
-    
+
     echo "<br>Sample data inserted successfully";
     $stmt->close();
 }

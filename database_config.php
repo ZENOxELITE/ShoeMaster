@@ -1,4 +1,3 @@
-
 <?php
 class DatabaseConfig {
     private $servername = "localhost";
@@ -13,7 +12,7 @@ class DatabaseConfig {
 
     private function connect() {
         $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
-        
+
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
@@ -28,7 +27,7 @@ class DatabaseConfig {
         $sql = "SELECT p.*, c.name as category_name FROM products p 
                 LEFT JOIN categories c ON p.category_id = c.id";
         $result = $this->conn->query($sql);
-        
+
         $products = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -44,7 +43,7 @@ class DatabaseConfig {
                 LEFT JOIN categories c ON p.category_id = c.id 
                 WHERE p.is_featured = 1";
         $result = $this->conn->query($sql);
-        
+
         $products = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -62,7 +61,7 @@ class DatabaseConfig {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows > 0) {
             return $result->fetch_assoc();
         }
@@ -73,7 +72,7 @@ class DatabaseConfig {
     public function getCategories() {
         $sql = "SELECT * FROM categories";
         $result = $this->conn->query($sql);
-        
+
         $categories = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -99,7 +98,7 @@ class DatabaseConfig {
         $stmt->bind_param("s", $session_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         $items = [];
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {

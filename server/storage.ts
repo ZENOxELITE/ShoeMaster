@@ -1,4 +1,3 @@
-
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 import { products, categories, cartItems, type Product, type InsertProduct, type Category, type InsertCategory, type CartItem, type InsertCartItem, type CartItemWithProduct } from "@shared/schema";
@@ -32,13 +31,13 @@ export interface IStorage {
   getFeaturedProducts(): Promise<Product[]>;
   getProductsByCategory(category: string): Promise<Product[]>;
   createProduct(product: InsertProduct): Promise<Product>;
-  
+
   // Categories
   getCategories(): Promise<Category[]>;
   getCategory(id: number): Promise<Category | undefined>;
   getCategoryBySlug(slug: string): Promise<Category | undefined>;
   createCategory(category: InsertCategory): Promise<Category>;
-  
+
   // Cart
   getCartItems(sessionId: string): Promise<CartItemWithProduct[]>;
   addToCart(item: InsertCartItem): Promise<CartItem>;
@@ -155,7 +154,7 @@ export const storage: IStorage = {
         .from(cartItems)
         .innerJoin(products, eq(cartItems.productId, products.id))
         .where(eq(cartItems.sessionId, sessionId));
-      
+
       return result;
     } catch (error) {
       console.error('Error fetching cart items:', error);

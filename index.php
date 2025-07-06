@@ -49,7 +49,7 @@ $categories = $db->getCategories();
         </div>
 
         <div class="test-db">
-            <strong>Database Status:</strong> Connected to MySQL successfully! 
+            <strong>Database Status:</strong> Connected to stride_db MySQL database successfully! 
             <a href="connect.php" class="btn">Test Database Connection</a>
         </div>
 
