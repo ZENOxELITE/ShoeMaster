@@ -16,7 +16,7 @@ if (process.env.DATABASE_URL) {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'stride_dev'
+    database: 'stride_db'
   });
 
   db = drizzle(mockConnection);
