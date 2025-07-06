@@ -1,170 +1,154 @@
 
-import { storage } from "./storage";
+import { storage } from "./storage.js";
 
-const sampleCategories = [
-  {
-    name: "Running Shoes",
-    description: "Performance footwear for runners",
-    imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
-    slug: "running-shoes"
-  },
-  {
-    name: "Lifestyle Sneakers", 
-    description: "Casual comfort meets street style",
-    imageUrl: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop",
-    slug: "lifestyle-sneakers"
-  },
-  {
-    name: "Training Shoes",
-    description: "Built for intense workouts and fitness",
-    imageUrl: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=400&fit=crop",
-    slug: "training-shoes"
-  }
-];
-
-const sampleProducts = [
-  {
-    name: "Nike Air Max 270",
-    description: "The Nike Air Max 270 delivers visible cushioning under every step.",
-    price: "150.00",
-    imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&h=500&fit=crop",
-    category: "Running Shoes",
-    brand: "Nike",
-    featured: true,
-    badge: "Popular",
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Black", "White", "Red"]),
-    inStock: true
-  },
-  {
-    name: "Adidas Ultraboost 22",
-    description: "Our most responsive running shoe, with incredible energy return.",
-    price: "180.00",
-    imageUrl: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=500&h=500&fit=crop",
-    category: "Running Shoes", 
-    brand: "Adidas",
-    featured: true,
-    badge: "New",
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Black", "White", "Gray"]),
-    inStock: true
-  },
-  {
-    name: "Jordan 1 Retro High",
-    description: "The iconic silhouette that started it all.",
-    price: "170.00",
-    imageUrl: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&h=500&fit=crop",
-    category: "Lifestyle Sneakers",
-    brand: "Nike",
-    featured: true,
-    badge: null,
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Black", "White", "Red"]),
-    inStock: true
-  },
-  {
-    name: "Converse Chuck Taylor All Star",
-    description: "The classic canvas sneaker that never goes out of style.",
-    price: "65.00",
-    imageUrl: "https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=500&h=500&fit=crop",
-    category: "Lifestyle Sneakers",
-    brand: "Converse",
-    featured: false,
-    badge: null,
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Black", "White", "Red", "Blue"]),
-    inStock: true
-  },
-  {
-    name: "Nike Metcon 8",
-    description: "Built for your toughest workouts, the Metcon 8 is more durable.",
-    price: "130.00",
-    imageUrl: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&h=500&fit=crop",
-    category: "Training Shoes",
-    brand: "Nike",
-    featured: true,
-    badge: "Popular",
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Black", "Gray", "Orange"]),
-    inStock: true
-  },
-  {
-    name: "Reebok Nano X2",
-    description: "Engineered for the versatility your training demands.",
-    price: "120.00",
-    imageUrl: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=500&h=500&fit=crop",
-    category: "Training Shoes",
-    brand: "Reebok",
-    featured: false,
-    badge: null,
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Black", "White", "Gray"]),
-    inStock: true
-  },
-  {
-    name: "Vans Old Skool",
-    description: "The classic skate shoe with iconic side stripe.",
-    price: "65.00",
-    imageUrl: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=500&h=500&fit=crop",
-    category: "Lifestyle Sneakers",
-    brand: "Vans",
-    featured: false,
-    badge: null,
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Black", "White", "Brown"]),
-    inStock: true
-  },
-  {
-    name: "New Balance 990v5",
-    description: "Made in USA heritage running shoe with premium materials.",
-    price: "185.00",
-    imageUrl: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500&h=500&fit=crop",
-    category: "Running Shoes",
-    brand: "New Balance",
-    featured: false,
-    badge: "New",
-    sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
-    colors: JSON.stringify(["Gray", "Black", "White"]),
-    inStock: true
-  }
-];
-
-export async function seedDatabase() {
+export async function seedProducts() {
   try {
-    console.log("Starting database seeding...");
-    
-    // Seed categories first
-    console.log("Seeding categories...");
-    for (const category of sampleCategories) {
+    console.log("Starting to seed products...");
+
+    // Create categories first
+    const categories = [
+      {
+        name: "Running Shoes",
+        slug: "running-shoes",
+        description: "High-performance running footwear"
+      },
+      {
+        name: "Basketball Shoes", 
+        slug: "basketball-shoes",
+        description: "Professional basketball sneakers"
+      },
+      {
+        name: "Lifestyle Shoes",
+        slug: "lifestyle-shoes", 
+        description: "Casual everyday footwear"
+      },
+      {
+        name: "Training Shoes",
+        slug: "training-shoes",
+        description: "Cross-training and gym shoes"
+      }
+    ];
+
+    // Insert categories
+    for (const category of categories) {
       try {
         await storage.createCategory(category);
         console.log(`Created category: ${category.name}`);
       } catch (error) {
-        console.log(`Category ${category.name} might already exist, skipping...`);
+        console.log(`Category ${category.name} may already exist`);
       }
     }
-    
-    // Seed products
-    console.log("Seeding products...");
-    for (const product of sampleProducts) {
+
+    // Create sample products
+    const products = [
+      {
+        name: "Nike Air Max 270",
+        description: "The Nike Air Max 270 delivers unparalleled all-day comfort with the largest Max Air unit yet.",
+        price: 150.00,
+        imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+        category: "running-shoes",
+        featured: true,
+        stockQuantity: 50,
+        sizes: JSON.stringify(["7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11"]),
+        colors: JSON.stringify(["Black/White", "Blue/Red", "Grey/Orange"])
+      },
+      {
+        name: "Adidas Ultraboost 22",
+        description: "Experience incredible energy return with Boost midsole technology.",
+        price: 180.00,
+        imageUrl: "https://images.unsplash.com/photo-1595950653106-6c9c1c7b3a74?w=400",
+        category: "running-shoes", 
+        featured: true,
+        stockQuantity: 35,
+        sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
+        colors: JSON.stringify(["Core Black", "Cloud White", "Grey Six"])
+      },
+      {
+        name: "Jordan Air Jordan 1 Mid",
+        description: "Inspired by the original AJ1, offering iconic Jordan DNA with a fresh twist.",
+        price: 110.00,
+        imageUrl: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=400",
+        category: "basketball-shoes",
+        featured: false,
+        stockQuantity: 25,
+        sizes: JSON.stringify(["8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5"]),
+        colors: JSON.stringify(["Bred", "Royal Blue", "Shadow"])
+      },
+      {
+        name: "Converse Chuck Taylor All Star",
+        description: "The classic canvas sneaker that started it all.",
+        price: 55.00,
+        imageUrl: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400",
+        category: "lifestyle-shoes",
+        featured: false,
+        stockQuantity: 60,
+        sizes: JSON.stringify(["6", "7", "8", "9", "10", "11", "12"]),
+        colors: JSON.stringify(["Black", "White", "Red", "Navy"])
+      },
+      {
+        name: "Nike Air Force 1",
+        description: "The radiance lives on with this hoops icon.",
+        price: 90.00,
+        imageUrl: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=400",
+        category: "lifestyle-shoes",
+        featured: true,
+        stockQuantity: 40,
+        sizes: JSON.stringify(["7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11"]),
+        colors: JSON.stringify(["Triple White", "Triple Black", "White/Black"])
+      },
+      {
+        name: "Reebok Nano X3",
+        description: "Built for the toughest workouts with superior durability.",
+        price: 130.00,
+        imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400",
+        category: "training-shoes",
+        featured: false,
+        stockQuantity: 30,
+        sizes: JSON.stringify(["7", "8", "9", "10", "11", "12"]),
+        colors: JSON.stringify(["Black/White", "Grey/Blue", "Red/Black"])
+      },
+      {
+        name: "New Balance Fresh Foam X 1080v12",
+        description: "The most Fresh Foam X cushioning for incredible comfort.",
+        price: 165.00,
+        imageUrl: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400",
+        category: "running-shoes",
+        featured: false,
+        stockQuantity: 20,
+        sizes: JSON.stringify(["7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5"]),
+        colors: JSON.stringify(["Black", "White/Blue", "Grey/Green"])
+      },
+      {
+        name: "Puma RS-X",
+        description: "Bold design meets comfort in this lifestyle runner.",
+        price: 100.00,
+        imageUrl: "https://images.unsplash.com/photo-1608667508764-695ad5ff81e6?w=400",
+        category: "lifestyle-shoes",
+        featured: false,
+        stockQuantity: 45,
+        sizes: JSON.stringify(["7", "8", "9", "10", "11"]),
+        colors: JSON.stringify(["White/Multi", "Black/Red", "Blue/Yellow"])
+      }
+    ];
+
+    // Insert products
+    for (const product of products) {
       try {
         await storage.createProduct(product);
         console.log(`Created product: ${product.name}`);
       } catch (error) {
-        console.log(`Product ${product.name} might already exist, skipping...`);
+        console.log(`Product ${product.name} may already exist or error occurred:`, error);
       }
     }
+
+    console.log("Finished seeding products!");
     
-    console.log("Database seeding completed successfully!");
   } catch (error) {
-    console.error("Error seeding database:", error);
+    console.error("Error seeding products:", error);
   }
 }
 
-// Run seeding if this file is executed directly
+// Run the seed function if this file is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  seedDatabase().then(() => {
-    console.log("Seeding finished.");
-    process.exit(0);
-  });
+  seedProducts().then(() => process.exit(0));
 }
