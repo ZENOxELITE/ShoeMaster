@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "@shared/schema";
 import ProductCard from "./product-card";
+import mockProducts from "../../../mock-data.json";
 
 export default function FeaturedProducts() {
-  const { data: products = [], isLoading } = useQuery<Product[]>({
+  const { data: featuredProducts, isLoading, error } = useQuery<Product[]>({
     queryKey: ["/api/products/featured"],
   });
+
+  // Use mock data as fallback when API is not available
+  const displayProducts = featuredProducts || mockProducts.filter(p => p.featured);
 
   return (
     <section className="py-20 bg-white">
@@ -16,7 +20,7 @@ export default function FeaturedProducts() {
             Discover our most popular athletic footwear, designed for peak performance and unmatched style.
           </p>
         </div>
-        
+
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[...Array(4)].map((_, i) => (
@@ -32,9 +36,15 @@ export default function FeaturedProducts() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
+            {displayProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center py-8 text-gray-500">
+            <p>Using demo data - API not available</p>
           </div>
         )}
       </div>

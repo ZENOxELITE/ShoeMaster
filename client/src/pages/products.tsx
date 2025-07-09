@@ -2,6 +2,7 @@ import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Product } from "@shared/schema";
+import { mockProducts } from "@/lib/mock-data";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import ProductCard from "@/components/product-card";
@@ -16,11 +17,16 @@ export default function Products() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("name");
 
-  const { data: products = [], isLoading } = useQuery<Product[]>({
+  const { data: products, isLoading, error } = useQuery<Product[]>({
     queryKey: category ? ["/api/products/category/" + category] : ["/api/products"],
   });
 
-  const filteredProducts = products
+  // Use mock data as fallback when API is not available
+  const displayProducts = products || (category 
+    ? mockProducts.filter(p => p.category === category) 
+    : mockProducts);
+
+  const filteredProducts = displayProducts
     .filter(product => 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase())

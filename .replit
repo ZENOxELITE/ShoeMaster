@@ -15,7 +15,7 @@ localPort = 5000
 externalPort = 80
 
 [workflows]
-runButton = "PHP Server"
+runButton = "Development Server"
 
 [[workflows.workflow]]
 name = "Project"
@@ -43,3 +43,12 @@ mode = "parallel"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "php -S 0.0.0.0:5000"
+
+[[workflows.workflow]]
+name = "Development Server"
+author = 39616895
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
