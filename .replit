@@ -15,7 +15,7 @@ localPort = 5000
 externalPort = 80
 
 [workflows]
-runButton = "Static Preview"
+runButton = "Static Website"
 
 [[workflows.workflow]]
 name = "Project"
@@ -61,3 +61,12 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python3 -m http.server 5000"
+
+[[workflows.workflow]]
+name = "Static Website"
+author = 39616895
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run build && npx vite preview --host 0.0.0.0 --port 5000"

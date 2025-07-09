@@ -1,5 +1,4 @@
 import { useParams } from "wouter";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Product } from "@shared/schema";
 import { mockProducts } from "@/lib/mock-data";
@@ -7,7 +6,6 @@ import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import ProductCard from "@/components/product-card";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter } from "lucide-react";
@@ -17,14 +15,10 @@ export default function Products() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("name");
 
-  const { data: products, isLoading, error } = useQuery<Product[]>({
-    queryKey: category ? ["/api/products/category/" + category] : ["/api/products"],
-  });
-
-  // Use mock data as fallback when API is not available
-  const displayProducts = products || (category 
+  // Use only mock data - no API calls
+  const displayProducts = category 
     ? mockProducts.filter(p => p.category === category) 
-    : mockProducts);
+    : mockProducts;
 
   const filteredProducts = displayProducts
     .filter(product => 
@@ -46,13 +40,13 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-neutral">
       <Navigation />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-black text-primary mb-4">
             {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Shoes` : "All Products"}
           </h1>
-          
+
           {/* Filters */}
           <Card className="mb-6">
             <CardContent className="p-6">
@@ -81,20 +75,7 @@ export default function Products() {
           </Card>
         </div>
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl card-shadow animate-pulse">
-                <div className="aspect-square bg-gray-200 rounded-t-2xl"></div>
-                <div className="p-6">
-                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                  <div className="h-8 bg-gray-200 rounded"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : filteredProducts.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <Card>
             <CardContent className="p-12 text-center">
               <Filter className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -110,7 +91,7 @@ export default function Products() {
           </div>
         )}
       </div>
-      
+
       <Footer />
     </div>
   );

@@ -1,33 +1,24 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
+
+import { Route, Switch } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
+import { CartProvider } from "@/hooks/use-cart";
 import Home from "@/pages/home";
 import Products from "@/pages/products";
 import ProductDetail from "@/pages/product-detail";
-
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/products" component={Products} />
-      <Route path="/products/:id" component={ProductDetail} />
-      <Route path="/category/:category" component={Products} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
+import NotFound from "@/pages/not-found";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <CartProvider>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/products" component={Products} />
+        <Route path="/products/:category" component={Products} />
+        <Route path="/product/:id" component={ProductDetail} />
+        <Route component={NotFound} />
+      </Switch>
+      <Toaster />
+    </CartProvider>
   );
 }
 
