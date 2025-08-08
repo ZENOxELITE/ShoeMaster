@@ -2,6 +2,16 @@
 import { mysqlTable, text, int, decimal, boolean, timestamp, json } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import {
+  pgTable,
+  text,
+  integer,
+  numeric,
+  boolean,
+  timestamp,
+  json
+} from "drizzle-orm/pg-core";
+
 
 export const products = mysqlTable("products", {
   id: int("id").primaryKey().autoincrement(),
