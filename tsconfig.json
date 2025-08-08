@@ -1,18 +1,13 @@
 {
-  "include": ["server/**/*", "shared/**/*"],
-  "exclude": ["node_modules", "build", "dist", "client", "**/*.test.ts"],
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
-    "strict": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "types": ["node"],
-    "paths": {
-      "@shared/*": ["./shared/*"]
-    },
-    "outDir": "dist"
-  }
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["vite/client"]
+  },
+  "include": ["server", "shared", "vite.config.ts"]
 }
