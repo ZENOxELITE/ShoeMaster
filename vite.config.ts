@@ -1,21 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-import cartographer from "@replit/vite-plugin-cartographer";
 import { fileURLToPath } from "url";
 
 // Fix for __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const isReplit = process.env.REPL_ID !== undefined;
-
 export default defineConfig({
   plugins: [
     react(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" && isReplit ? [cartographer()] : []),
   ],
   resolve: {
     alias: {
