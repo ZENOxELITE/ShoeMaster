@@ -1,0 +1,2 @@
+# This project uses Node.js. Install dependencies using package.json.
+# Run: npm install
